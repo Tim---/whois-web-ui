@@ -1,0 +1,38 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Search</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form [formGroup]="form">
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Query</mat-label>
+                    <input matInput formControlName="query">
+                </mat-form-field>
+            </div>
+
+            <div>
+                <mat-radio-group class="example-radio-group" formControlName="type" aria-label="Select an option">
+                    <mat-radio-button class="example-radio-button" value="text">Search by text</mat-radio-button>
+                    <mat-radio-button class="example-radio-button" value="resource">Find a resource</mat-radio-button>
+                    <mat-radio-button class="example-radio-button" value="inverse">Inverse query</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div>
+                <mat-checkbox formControlName="personal">Personal</mat-checkbox>
+            </div>
+          
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Limit</mat-label>
+                    <input matInput formControlName="limit">
+                </mat-form-field>
+            </div>
+
+            <p>
+                <button mat-raised-button color="primary" [routerLink]="['/']" [queryParams]="form.value">Search</button>
+            </p>
+        </form>
+    </mat-card-content>
+</mat-card>

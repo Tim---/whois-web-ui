@@ -1,0 +1,6 @@
+<app-search-form (search)="search($event)"></app-search-form>
+<div *ngIf="hasmore"><button mat-raised-button (click)="loadMore()">Load more ?</button></div>
+<div class="error" *ngFor="let err of errors">
+    <div *ngFor="let line of err">{{ line }}</div>
+</div>
+<app-search-results [tables]="tables"></app-search-results>

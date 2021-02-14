@@ -1,0 +1,4 @@
+<div class="error" *ngFor="let err of errors">
+    <div *ngFor="let line of err">{{ line }}</div>
+</div>
+<app-object *ngIf="obj" mat-dialog-content [obj]="obj.attributes.attribute"></app-object>

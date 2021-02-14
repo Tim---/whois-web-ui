@@ -1,0 +1,10 @@
+<mat-tab-group>
+    <mat-tab *ngFor="let res of tables | keyvalue" [label]="res.key">
+        <ng-template matTabLabel>
+            <span [matBadge]="res.value.length" matBadgeOverlap="false">{{ res.key }}</span>
+        </ng-template>    
+        <app-search-table [rows]="res.value" [type]="res.key"></app-search-table>
+    </mat-tab>
+</mat-tab-group>
+
+
