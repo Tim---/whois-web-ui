@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { WhoisResults } from '../whois.service';
 
 
 
@@ -9,7 +10,7 @@ import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchResultsComponent implements OnInit {
-  @Input() tables;
+  @Input({ required: true }) tables!: WhoisResults;
 
   constructor() { }
 

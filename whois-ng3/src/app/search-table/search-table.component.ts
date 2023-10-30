@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { WhoisService } from '../whois.service';
 import { MatDialog } from '@angular/material/dialog';
+import { WhoisResultTable } from '../whois.service';
 
 @Component({
   selector: 'app-search-table',
@@ -9,8 +10,8 @@ import { MatDialog } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchTableComponent implements OnInit {
-  @Input() rows;
-  @Input() type;
+  @Input({ required: true }) rows!: WhoisResultTable;
+  @Input({ required: true }) type!: string;
   columns = WhoisService.columns;
   inverseAttributes = WhoisService.inverseAttributes;
 

@@ -33,23 +33,26 @@ export class SearchFormComponent implements OnInit {
   constructor(private fb: FormBuilder, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const patch = {};
-      if(params['query'])
-        patch['query'] = params['query'];
-      if(params['type'])
-        patch['type'] = params['type'];
-      if(params['personal'] && params['personal'] == 'true')
-        patch['personal'] = true;
-      if(params['limit'])
-        patch['limit'] = +params['limit'];
-      if(params['offset'])
-        patch['offset'] = +params['offset'];
-      
-      this.form.patchValue(patch);
+    this.route.queryParamMap.subscribe(params => {
+      if(!params.keys.length)
+        return;
+      console.log(params);
+      this.form.patchValue({
+        query: params.get('query'),
+        type: params.get('type'),
+        personal: params.get('personal') == 'true',
+        limit: Number(params.get('limit')) || null,
+        offset: Number(params.get('offset')) || null,
+      });
 
-      if(params['query']) {
-        this.search.emit(this.form.value);
+      if(params.get('query')) {
+        this.search.emit({
+          query: ''+params.get('query'),
+          type: ''+params.get('type'),
+          personal: params.get('personal') == 'true',
+          limit: +Number(params.get('limit')),
+          offset: +Number(params.get('offset')),
+        });
       }
     });
   }

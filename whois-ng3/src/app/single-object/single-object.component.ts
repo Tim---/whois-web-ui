@@ -9,7 +9,7 @@ import { WhoisService, SearchObject, WhoisErrors } from '../whois.service';
   styleUrls: ['./single-object.component.css']
 })
 export class SingleObjectComponent implements OnInit {
-  obj: SearchObject;
+  obj?: SearchObject;
   errors: WhoisErrors = [];
 
   constructor(private route: ActivatedRoute, private whoisService: WhoisService) { }
@@ -18,7 +18,7 @@ export class SingleObjectComponent implements OnInit {
     var self = this;
     this.route.paramMap.pipe(
       switchMap(params => {
-        return this.whoisService.getObject(params.get('source'), params.get('type'), params.get('pkey'));
+        return this.whoisService.getObject(''+params.get('source'), ''+params.get('type'), ''+params.get('pkey'));
       })
     ).subscribe({
       next(obj) {
@@ -26,7 +26,7 @@ export class SingleObjectComponent implements OnInit {
         self.errors = [];
       },
       error(err) {
-        self.obj = null;
+        self.obj = undefined;
         self.errors = self.whoisService.convertErrors(err);
       }
     });

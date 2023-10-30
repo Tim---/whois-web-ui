@@ -7,11 +7,17 @@ import { WhoisService, SearchResult, SearchObject, WhoisErrors, WhoisResults, Wh
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  objects: SearchObject[];
+  objects: SearchObject[] = [];
   tables: WhoisResults = {};
   errors: WhoisErrors = [];
   hasmore: boolean = false;
-  params: WhoisParams;
+  params: WhoisParams = {
+    query: '',
+    type: 'text',
+    personal: false,
+    offset: 0,
+    limit: 100,
+  };
 
   constructor(private whoisService: WhoisService) { }
 

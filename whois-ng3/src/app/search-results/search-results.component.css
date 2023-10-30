@@ -1,0 +1,6 @@
+.stretch-badge > .mat-badge-content {
+    min-width: 22px;
+    width: auto;
+    border-radius: 13px;
+    right: unset !important;
+  }

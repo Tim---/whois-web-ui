@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map, retry, catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 export interface WhoisParams {
   query: string;
@@ -186,7 +186,7 @@ export class WhoisService {
     'person': ['nic-hdl'],
   }
 
-  static columns = {
+  static columns: {[key: string]: string[]} = {
     'inetnum': ['inetnum', 'netname', 'descr', 'country', 'org', 'abuse-c', 'status', 'mnt-by', 'mnt-routes', 'mnt-lower'],
     'inet6num': ['inet6num', 'netname', 'descr', 'country', 'org', 'abuse-c', 'status', 'mnt-by', 'mnt-routes', 'mnt-lower'],
     'as-block': ['as-block', 'descr', 'org', 'mnt-by'],
@@ -213,7 +213,7 @@ export class WhoisService {
   constructor(private http: HttpClient) { }
 
   search(wp: WhoisParams): Observable<SearchObject[]> {
-    const params = {};
+    const params: {[key: string]: string | number | string[]} = {};
     params['query-string'] = wp.query;
     params['flags'] = ['no-referenced'];
 
@@ -246,6 +246,7 @@ export class WhoisService {
         if(res.objects) {
           return res.objects.object;
         }
+        throw "Oh noes !";
       })
     );
   }
@@ -259,6 +260,7 @@ export class WhoisService {
         if(res.objects) {
           return res.objects.object[0];
         }
+        throw "Oh noes !";
       })
     );
   }
@@ -277,18 +279,19 @@ export class WhoisService {
         for(const c of WhoisService.columns[type]) {
           if(attrs[c])
             row[c] = attrs[c].map(a => {
-              let res = {value: a.value};
+              let attr: WhoisResultAttr = {value: a.value};
               if(a.link)
-                res['link'] = [o.source.id, a["referenced-type"], a.value];
+                attr['link'] = [o.source.id, ''+a["referenced-type"], a.value];
               if(WhoisService.inverseAttributes.includes(c))
-                res['inverse'] = true;
-              return res;
+                attr['inverse'] = true;
+              return attr;
             });
           else
             row[c] = [];
         }
-        row[WhoisService.columns[type][0]][0].link = [o.source.id, o.type, o["primary-key"].attribute.map(a => a.value).join('')];
-        row[WhoisService.columns[type][0]][0].inverse = true;
+        const key = WhoisService.columns[type][0];
+        row[key][0].link = [o.source.id, o.type, o["primary-key"].attribute.map(a => a.value).join('')];
+        row[key][0].inverse = true;
         rows.push(row);
       }
       res[type] = rows;
@@ -298,6 +301,6 @@ export class WhoisService {
   }
 
   convertErrors(result: SearchErrorMessage[]) : WhoisErrors {
-    return result.map(e => e.text.replace(/%s/g, _ => e.args.shift().value).trim().split('\n'));
+    return result.map(e => e.text.replace(/%s/g, _ => e.args[0].value).trim().split('\n'));
   }
 }

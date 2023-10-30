@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SearchObject } from '../whois.service';
+import { SearchAttribute } from '../whois.service';
 
 @Component({
   selector: 'app-object',
@@ -7,7 +7,7 @@ import { SearchObject } from '../whois.service';
   styleUrls: ['./object.component.css']
 })
 export class ObjectComponent implements OnInit {
-  @Input() obj: SearchObject;
+  @Input({ required: true }) obj!: SearchAttribute[];
   columns = ['name', 'value'];
 
   constructor() { }
